@@ -1,0 +1,17 @@
+{
+  "name": "finder-stars-miniapp-real",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Telegram Mini App with real Telegram Stars payments, validated Mini App identity, Mines and NFT Upgrade",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

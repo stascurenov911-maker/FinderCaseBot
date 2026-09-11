@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#0b0d13">
+  <title>Finder</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div>
+        <div class="brand">Finder</div>
+        <div class="sub">Stars & Gifts</div>
+      </div>
+      <div class="balance">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 14.9 9l6.3.7-4.7 4.3 1.3 6.2-5.8-3.2-5.8 3.2 1.3-6.2-4.7-4.3L9.1 9 12 2.8Z"/></svg>
+        <span id="balance">0</span>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="screen active">
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <p class="eyebrow">FINDER</p>
+          <h1>Играй. Апгрейдь.<br>Собирай подарки.</h1>
+          <p>Stars и коллекционные подарки в одном Mini App.</p>
+        </div>
+        <div class="mode-grid">
+          <button class="mode-card" data-screen="mines">
+            <span class="mode-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="5.3"/></svg>
+            </span>
+            <strong>Мины</strong>
+            <span>Открой безопасные клетки</span>
+          </button>
+          <button class="mode-card" data-screen="upgrade">
+            <span class="mode-icon purple">
+              <svg viewBox="0 0 24 24"><path d="M5 8h9M14 8l-2.7-2.7M14 8l-2.7 2.7M19 16h-9M10 16l2.7-2.7M10 16l2.7 2.7"/></svg>
+            </span>
+            <strong>Апгрейд</strong>
+            <span>Рискни ради более редкого NFT</span>
+          </button>
+        </div>
+        <div class="section-title">Инвентарь</div>
+        <div id="homeInventory" class="inventory"></div>
+      </section>
+
+      <section id="mines" class="screen">
+        <div class="screen-head">
+          <button class="back" data-screen="home">Назад</button>
+          <h2>Мины</h2>
+          <span></span>
+        </div>
+        <div class="controls">
+          <div class="control-group">
+            <label>Поле</label>
+            <div class="segmented" id="boardSizes">
+              <button data-size="3" class="selected">3×3</button>
+              <button data-size="5">5×5</button>
+              <button data-size="7">7×7</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <label>Мины <span id="mineCountValue">2</span></label>
+            <input id="mineCount" type="range" min="1" max="7" value="2">
+          </div>
+          <div class="control-group">
+            <label>Ставка</label>
+            <div class="bet-row" id="bets">
+              <button data-bet="5">5</button>
+              <button data-bet="10" class="selected">10</button>
+              <button data-bet="25">25</button>
+              <button data-bet="50">50</button>
+              <button data-bet="100">100</button>
+            </div>
+          </div>
+        </div>
+        <button id="startMines" class="primary">Начать игру</button>
+        <div id="mineStatus" class="status"></div>
+        <div id="mineBoard" class="mine-board"></div>
+      </section>
+
+      <section id="upgrade" class="screen">
+        <div class="screen-head">
+          <button class="back" data-screen="home">Назад</button>
+          <h2>Апгрейд</h2>
+          <span></span>
+        </div>
+        <div class="upgrade-picks">
+          <div>
+            <div class="label">Твой NFT</div>
+            <div id="sourceCard" class="selected-nft empty">Выбери подарок</div>
+          </div>
+          <div class="swap">
+            <svg viewBox="0 0 24 24"><path d="m7 7 5-5 5 5M12 2v15M17 17l-5 5-5-5M12 22V7"/></svg>
+          </div>
+          <div>
+            <div class="label">Желаемый NFT</div>
+            <div id="targetCard" class="selected-nft empty">Выбери подарок</div>
+          </div>
+        </div>
+
+        <div class="upgrade-wheel-wrap">
+          <div id="wheel" class="wheel">
+            <div class="wheel-sector" id="wheelSector"></div>
+            <div class="wheel-center"></div>
+            <div id="needle" class="needle"><span></span></div>
+          </div>
+          <div class="chance"><span>Шанс</span><strong id="chance">—</strong></div>
+        </div>
+
+        <div class="section-title">Твои NFT</div>
+        <div id="upgradeInventory" class="inventory"></div>
+        <div class="section-title">Цели</div>
+        <div id="targets" class="inventory"></div>
+
+        <button id="startUpgrade" class="primary" disabled>Запустить апгрейд</button>
+        <div id="upgradeResult" class="status"></div>
+      </section>
+
+      <section id="inventory" class="screen">
+        <div class="screen-head">
+          <button class="back" data-screen="home">Назад</button>
+          <h2>Инвентарь</h2>
+          <span></span>
+        </div>
+        <div id="fullInventory" class="inventory"></div>
+      </section>
+    </main>
+
+    <nav class="nav">
+      <button data-screen="home" class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5V20H4v-8.5Z"/><path d="M9 20v-5h6v5"/></svg>
+        <span>Главная</span>
+      </button>
+      <button data-screen="mines" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="5.3"/></svg>
+        <span>Мины</span>
+      </button>
+      <button data-screen="upgrade" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M5 8h9M14 8l-2.7-2.7M14 8l-2.7 2.7M19 16h-9M10 16l2.7 2.7M10 16l2.7-2.7"/></svg>
+        <span>Апгрейд</span>
+      </button>
+      <button data-screen="inventory" class="nav-item">
+        <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 5V3h8v2M8 10h8M8 14h5"/></svg>
+        <span>Инвентарь</span>
+      </button>
+    </nav>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
